@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const faker = require("faker");
+const fs = require("fs");
 const { productDetail } = require("./index");
 
 // const mySeedConnection = mongoose.connect(
@@ -27,10 +28,12 @@ const fakeStyles = () => {
 
 const options = [0, 5];
 // make a single fake review;
+const rawOutput = [];
+
 const makeFake = (idx) => {
   const padded = String(idx).padStart(3, "0");
   console.log("padded", padded);
-  const newProduct = productDetail.create({
+  const rawProduct = {
     producer: faker.company.companyName(),
     urlFriendlyNumber: padded,
     title: faker.commerce.productName(),
@@ -49,6 +52,10 @@ const makeFake = (idx) => {
     inStock: faker.random.boolean(),
     freeShipping: faker.random.boolean(),
     styles: fakeStyles(),
+  };
+  rawOutput.push(rawProduct);
+  const newProduct = productDetail.create(rawProduct).catch((err) => {
+    console.log("err --->", err);
   });
 };
 
@@ -59,7 +66,25 @@ const makeNAmount = (amount) => {
     .map((zero, idx) => makeFake(idx));
 };
 
-makeNAmount(10);
+makeNAmount(100);
 // console.log("fakeData", fakeData);
+
+const sortedData = rawOutput.sort((a, b) => {
+  const urlA = a.urlFriendlyNumber.toUpperCase();
+  const urlB = b.urlFriendlyNumber.toUpperCase();
+  if (urlA < urlB) {
+    return -1;
+  }
+  if (urlA > urlB) {
+    return 1;
+  }
+  return 0;
+});
+
+console.log("sorted", sortedData);
+
+fs.writeFile(`${__dirname}/dataOutput.json`, JSON.stringify(sortedData), () => {
+  console.log("data written");
+});
 
 mongoose.connection.close();
