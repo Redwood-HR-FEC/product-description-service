@@ -79,11 +79,7 @@ const productdetailsSchema = mongoose.Schema({
   },
 });
 
-const productDetail = mongoose.model(
-  "productDetail",
-  productdetailsSchema,
-  "productDetail"
-);
+const productDetail = mongoose.model("productdetails", productdetailsSchema);
 
 // make an array of fake descriptions
 
