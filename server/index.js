@@ -1,6 +1,7 @@
 const express = require("express");
 const faker = require("faker");
 const cors = require("cors");
+const compression = require("compression");
 const { productDetail, myConnection, fakeData } = require("../database");
 const dotenv = require("dotenv").config();
 
@@ -10,6 +11,7 @@ const app = express();
 
 myConnection
   .then(() => {
+    app.use(compression());
     console.log("hurray were connected");
 
     app.use(cors());

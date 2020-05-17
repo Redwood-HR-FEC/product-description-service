@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 const faker = require("faker");
 const dotenv = require("dotenv").config();
 
-const myConnection = mongoose.connect(process.env.DB);
+console.log("process connection db -->", process.env.DB);
+const myConnection = mongoose.connect(process.env.DB, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 /* .then(() => {
     console.log("hurray were connected");
   })
