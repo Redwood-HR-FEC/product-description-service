@@ -17,7 +17,7 @@
     "test:circle": "jest"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "axios-mock-adapter": "^1.18.1",
     "babel-jest": "^26.0.1",
     "compression": "^1.7.4",
